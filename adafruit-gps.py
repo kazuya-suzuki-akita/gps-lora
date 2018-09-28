@@ -44,7 +44,7 @@ class AdafruitGPS():
             valid = True
         else:
             valid = False
-/el
+
         # calculate time
         date_string = elements[8]
         year = 2000 + int(date_string[4:6])
