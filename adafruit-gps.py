@@ -5,22 +5,22 @@ from datetime import datetime
 
 class AdafruitGPS():
     def __init__(self, dev):
-        self.s = serial.Serial(dev, 9600)
+        self.serial = serial.Serial(dev, 9600)
 
     def readline(self, timeout = None):
         if timeout != None:
-            self.s.close()
-            self.s.timeout = timeout
-            self.s.open()
-        line = self.s.readline()
+            self.serial.close()
+            self.serial.timeout = timeout
+            self.serial.open()
+        line = self.serial.readline()
         if timeout != None:
-            self.s.close()
-            self.s.timeout = None
-            self.s.open()
+            self.serial.close()
+            self.serial.timeout = None
+            self.serial.open()
         return line
 
     def write(self, msg):
-        self.s.write(msg.encode('utf-8'))
+        self.serial.write(msg.encode('utf-8'))
 
     def parse_gprmc(self, elements):
         # calculate latidude
