@@ -63,8 +63,8 @@ def main():
     gps = AdafruitGPS("/dev/ttyUSB0")
     while True:
         line = gps.readline()
-        elements = line.split(",")
-        if elements[0] == "$GPRMC":
+        if "$GPRMC" in line:
+            elements = line.split(",")
             elements.pop(0)
             latitude, longitude, valid, time = gps.parse_gprmc(elements)
             print(latitude, longitude, sep=',')
