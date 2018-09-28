@@ -62,7 +62,7 @@ class AdafruitGPS():
 def main():
     gps = AdafruitGPS("/dev/ttyUSB0")
     while True:
-        line = gps.readline()
+        line = str(gps.readline(), encoding='utf-8')
         if "$GPRMC" in line:
             elements = line.split(",")
             elements.pop(0)
