@@ -48,8 +48,8 @@ class AdafruitGPS():
         # calculate time
         date_string = elements[8]
         year = 2000 + int(date_string[4:6])
-        date = int(date_string[2:4])
-        month = int(date_string[0:2])
+        month = int(date_string[2:4])
+        date = int(date_string[0:2])
         time_string = elements[0]
         hour = int(time_string[0:2])
         minute = int(time_string[2:4])
