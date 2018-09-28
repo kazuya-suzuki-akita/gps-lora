@@ -54,7 +54,7 @@ class AdafruitGPS():
         hour = int(time_string[0:2])
         minute = int(time_string[2:4])
         second = int(time_string[4:6])
-        time = datetime(year, mount, date, hour, minute, second)
+        time = datetime(year, month, date, hour, minute, second)
 
         return latitude, longitude, valid, time
 
