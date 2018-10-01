@@ -73,8 +73,9 @@ class ES920LR():
 
 def main():
     lora = ES920LR("/dev/ttyUSB1")
-    while
-    print("ES920LR module")
+    while True:
+        self.serial.sendmsg("test")
+        sleep(10)
 
 if __name__ == "__main__":
     main()
