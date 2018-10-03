@@ -8,7 +8,7 @@ class AdafruitGPS():
     def __init__(self, dev):
         self.serial = serial.Serial(dev, 9600)
         self.date = date.today()
-        self.time = time.now()
+        self.time = time(0, 0, 0)
         self.latitude = 0.0
         self.longitude = 0.0
         self.altitude = 0.0
