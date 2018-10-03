@@ -22,35 +22,34 @@ class AdafruitGPS():
     def write(self, msg):
         self.serial.write(msg.encode('utf-8'))
 
-    def parse_gprmc(self, elements):
-        # calculate latidude
-        value = float(elements[2]) / 100
+    def calc_coordinate(data, direction):
+        value = float(data) / 100
         degree = int(value)
         minutes = ( value - degree ) / 0.6
         latitude = float(degree) + minutes
-        if elements[3] == "S":
+        if direction == "S" or direction == "W":
             latitude *= -1
+        return latitude
 
-        # calculate longitude
-        value = float(elements[4]) / 100
-        degree = int(value)
-        minutes = ( value - degree ) / 0.6
-        longitude = float(degree) + minutes
-        if elements[5] == "W":
-            longitude *= -1
-
+    def parse_rmc(self, elements):
         # calculate status
-        if elements[1] == "A":
+        if elements[2] == "A":
             valid = True
         else:
             valid = False
 
+        # calculate latidude
+        latitude = calc_coordinate(elements[3], elements[4])
+
+        # calculate longitude
+        longitude = calc_coordinate(elements[5], elements[6])
+
         # calculate time
-        date_string = elements[8]
+        date_string = elements[9]
         year = 2000 + int(date_string[4:6])
         month = int(date_string[2:4])
         date = int(date_string[0:2])
-        time_string = elements[0]
+        time_string = elements[1]
         hour = int(time_string[0:2])
         minute = int(time_string[2:4])
         second = int(time_string[4:6])
@@ -58,6 +57,27 @@ class AdafruitGPS():
 
         return latitude, longitude, valid, time
 
+    def parse_gga(self, elements):
+        # calculate time
+        time_string = elements[1]
+        hour = int(time_string[0:2])
+        minute = int(time_string[2:4])
+        second = int(time_string[4:6])
+        time = datetime(0, 0, 0, hour, minute, second)
+
+        # calculate latidude
+        latitude = calc_coordinate(elements[2], elements[3])
+
+        # calculate longitude
+        longitude = calc_coordinate(elements[4], elements[5])
+
+        # calculate antennna altitude
+        altitude = float(elements[9])
+
+        # calculate geoidal separation
+        separation = float(elements[11])
+
+        return latidude, longitude, valid, time, altitude, separation
 
 def main():
     gps = AdafruitGPS("/dev/ttyUSB0")
@@ -65,9 +85,14 @@ def main():
         line = str(gps.readline(), encoding='utf-8')
         if "$GPRMC" in line:
             elements = line.split(",")
-            elements.pop(0)
-            latitude, longitude, valid, time = gps.parse_gprmc(elements)
+            latitude, longitude, valid, time = gps.parse_rmc(elements)
             print(latitude, longitude, sep=',')
+        if "$GPGGA" in line:
+            elements ~ line.split(",")
+            latidude, longitude, valid, time, altitude, separation = parse_gga(elements)
+            print(latitude, longitude, altitude,sep=',')
+
+
 
 if __name__ == "__main__":
     main()

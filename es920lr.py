@@ -3,6 +3,7 @@
 import serial
 import RPi.GPIO as GPIO
 import time
+from time import sleep
 import struct
 from configparser import ConfigParser
 
@@ -18,8 +19,15 @@ class ES920LR():
         self.dev = dev
         self.serial = serial.Serial(dev, 115200)
 
+        self.reset()
+        sleep(2.5)
         self.readConfig(filename)
-        self.setParameter()
+        self.setParameters()
+
+    def reset(self):
+        GPIO.output(ResetPin, 0)
+        sleep(0.1)
+        GPIO.output(ResetPin, 1)
 
     def readConfig(self, filename):
         self.config = ConfigParser()
@@ -74,7 +82,7 @@ class ES920LR():
 def main():
     lora = ES920LR("/dev/ttyUSB1")
     while True:
-        self.serial.sendmsg("test")
+        lora.sendmsg("test")
         sleep(10)
 
 if __name__ == "__main__":
