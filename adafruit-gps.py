@@ -50,24 +50,29 @@ class AdafruitGPS():
         return date(year, month, day)
 
     def parse_rmc(self, elements):
-        self.valid = True if elements[2] == "A" else False
-        if self.valid == False:
-            return
-        self.latitude = self.calc_coordinate(elements[3], elements[4])
-        self.longitude = self.calc_coordinate(elements[5], elements[6])
-        self.time = self.parse_time(elements[1])
-        self.date = self.parse_date(elements[9])
+        try:
+            self.valid = True if elements[2] == "A" else False
+            if self.valid == False:
+                return
+            self.latitude = self.calc_coordinate(elements[3], elements[4])
+            self.longitude = self.calc_coordinate(elements[5], elements[6])
+            self.time = self.parse_time(elements[1])
+            self.date = self.parse_date(elements[9])
+        except:
+            self.valid = False
 
     def parse_gga(self, elements):
-        self.valid = True if int(elements[6]) > 0 else False
-        if self.valid == False:
-            return
-        self.valid = True
-        self.time = self.parse_time(elements[1])
-        self.latitude = self.calc_coordinate(elements[2], elements[3])
-        self.longitude = self.calc_coordinate(elements[4], elements[5])
-        self.altitude = float(elements[9])
-        self.separation = float(elements[11])
+        try:
+            self.valid = True if int(elements[6]) > 0 else False
+            if self.valid == False:
+                return
+            self.time = self.parse_time(elements[1])
+            self.latitude = self.calc_coordinate(elements[2], elements[3])
+            self.longitude = self.calc_coordinate(elements[4], elements[5])
+            self.altitude = float(elements[9])
+            self.separation = float(elements[11])
+        except:
+            self.valid = False
 
 def main():
     gps = AdafruitGPS("/dev/ttyUSB0")
