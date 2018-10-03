@@ -31,16 +31,16 @@ class ES920LR():
         GPIO.output(ResetPin, 1)
 
     def waitmsg(self, msg):
-        line = self.readline()
-        while line != msg:
-            line = self.readline()
+        line = str(self.readline(), encoding='utf-8')
+        while msg in line:
+            line = str(self.readline(), encoding='utf-8')
 
     def readConfig(self, filename):
         self.config = ConfigParser()
         self.config.read(filename)
 
     def setParameters(self):
-        self.waitmsg("****")
+        self.waitmsg("Select Mode [1.terminal or 2.processor]")
         self.sendcmd("2")
         self.sendcmd("x")
         self.sendcmd("a 2")
