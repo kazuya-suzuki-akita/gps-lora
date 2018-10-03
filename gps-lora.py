@@ -1,26 +1,24 @@
 #!/usr/bin/env python3
 # prototype
 
-import time
 import threading
-import adafruitgps
+import adafruit_gps
 import es920lr
 
 def initialize():
-    initialize_gps()
-    initialize_lora()
+    gps = AdafruitGPS("/dev/ttyUSB0")
+    lora = ES920LR("/dev/ttyUSB1")
 
-def loop_gps():
-    while True:
-
-def loop_lora():
-    while True:
-
-if __name__ == "__main__":
+def main():
     initialize()
 
-    thread_gps = threading.Thread(target=loop_gps)
-    thread_lora = threading.Thread(target=loop_lora)
+    thread_gps = threading.Thread(target=gps.loop)
+    thread_sender = threading.Thread(target=lora.send_loop)
+    thread_reciever = threading.Thread(target=lora.recieve_loop)
 
     thread_gps.start()
-    thread_lora.start()
+    thread_sender.start()
+    thread_reciever.start()
+
+if __name__ == "__main__":
+    main()
