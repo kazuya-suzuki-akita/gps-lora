@@ -2,7 +2,7 @@
 # prototype
 
 import threading
-import adafruit_gps
+import adafruitgps
 import es920lr
 
 def initialize():
