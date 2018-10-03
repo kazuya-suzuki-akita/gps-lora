@@ -7,7 +7,7 @@ from es920lr import ES920LR
 
 def main():
     gps = AdafruitGPS("/dev/ttyUSB0")
-    lora = ES920LR("/dev/ttyUSB1")
+    lora = ES920LR("/dev/ttyUSB1", gps)
 
     thread_gps = threading.Thread(target=gps.loop)
     thread_sender = threading.Thread(target=lora.send_loop)

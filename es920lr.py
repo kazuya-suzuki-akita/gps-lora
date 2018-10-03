@@ -10,7 +10,7 @@ import threading
 ResetPin = 12
 
 class ES920LR():
-    def __init__(self, dev, filename="./config.ini"):
+    def __init__(self, dev, gps, filename="./config.ini"):
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
         GPIO.setup(ResetPin, GPIO.OUT)
@@ -24,6 +24,8 @@ class ES920LR():
         time.sleep(2.5)
         self.readConfig(filename)
         self.setParameters()
+
+        self.gps = gps
 
     def reset(self):
         GPIO.output(ResetPin, 0)
@@ -87,7 +89,10 @@ class ES920LR():
 
     def send_loop(self):
         while True:
-            self.sendmsg("test")
+            valid_str = 'T' if self.gps.valid == True else 'F'
+            msg = '{},{:.5f},{:.5f},{},{}'.format(self.gps.time.strftime('%H%M%S%f'),
+            self.gps.latitude, self.gps.longitude, self.gps.altitude, self.gps.valid)
+            self.sendmsg(msg)
             time.sleep(10)
 
     def recieve_loop(self):
