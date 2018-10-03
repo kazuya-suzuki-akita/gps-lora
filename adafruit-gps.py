@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
 import serial
-from datetime import datetime
+import datetime
 
 class AdafruitGPS():
     def __init__(self, dev):
         self.serial = serial.Serial(dev, 9600)
+        self.date = datetime.date.today()
+        self.valid = False
 
     def readline(self, timeout = None):
         if timeout != None:
@@ -39,23 +41,25 @@ class AdafruitGPS():
             valid = False
 
         # calculate latidude
-        latitude = calc_coordinate(elements[3], elements[4])
+        self.latitude = calc_coordinate(elements[3], elements[4])
 
         # calculate longitude
-        longitude = calc_coordinate(elements[5], elements[6])
+        self.longitude = calc_coordinate(elements[5], elements[6])
 
         # calculate time
         date_string = elements[9]
         year = 2000 + int(date_string[4:6])
         month = int(date_string[2:4])
-        date = int(date_string[0:2])
+        day = int(date_string[0:2])
+        self.date = datetime.date(year, month, day)
+
         time_string = elements[1]
         hour = int(time_string[0:2])
         minute = int(time_string[2:4])
         second = int(time_string[4:6])
-        time = datetime(year, month, date, hour, minute, second)
+        self.time = datetime.time(hour, minute, second)
 
-        return latitude, longitude, valid, time
+        return self.latitude, self.longitude, self.valid, self.time
 
     def parse_gga(self, elements):
         # calculate time
@@ -63,21 +67,27 @@ class AdafruitGPS():
         hour = int(time_string[0:2])
         minute = int(time_string[2:4])
         second = int(time_string[4:6])
-        time = datetime(0, 0, 0, hour, minute, second)
+        self.time = datetime.time(hour, minute, second)
 
         # calculate latidude
-        latitude = calc_coordinate(elements[2], elements[3])
+        self.latitude = calc_coordinate(elements[2], elements[3])
 
         # calculate longitude
-        longitude = calc_coordinate(elements[4], elements[5])
+        self.longitude = calc_coordinate(elements[4], elements[5])
+
+        # calculate quality
+        if int(elements[6]) == 0:
+            self.valid = False
+        else:
+            self.valid = True
 
         # calculate antennna altitude
-        altitude = float(elements[9])
+        self.altitude = float(elements[9])
 
         # calculate geoidal separation
-        separation = float(elements[11])
+        self.separation = float(elements[11])
 
-        return latidude, longitude, valid, time, altitude, separation
+        return self.latidude, self.longitude, self.valid, self.time, self.altitude, self.separation
 
 def main():
     gps = AdafruitGPS("/dev/ttyUSB0")
@@ -88,11 +98,9 @@ def main():
             latitude, longitude, valid, time = gps.parse_rmc(elements)
             print(latitude, longitude, sep=',')
         if "$GPGGA" in line:
-            elements ~ line.split(",")
-            latidude, longitude, valid, time, altitude, separation = parse_gga(elements)
-            print(latitude, longitude, altitude,sep=',')
-
-
+            elements = line.split(",")
+            latidude, longitude, valid, time, altitude, separation = gps.parse_gga(elements)
+            print(latitude, longitude, altitude, sep=',')
 
 if __name__ == "__main__":
     main()
