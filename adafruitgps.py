@@ -95,13 +95,17 @@ class AdafruitGPS():
 
     def loop(self):
         while True:
-            line = str(gps.readline(), encoding='utf-8')
-            if "$GPRMC" in line:
-                elements = line.split(",")
-                gps.parse_rmc(elements)
-            if "$GPGGA" in line:
-                elements = line.split(",")
-                gps.parse_gga(elements)
+            try:
+                line = str(self.readline(), encoding='utf-8')
+            except:
+                pass
+            else:
+                if "$GPRMC" in line:
+                    elements = line.split(",")
+                    self.parse_rmc(elements)
+                if "$GPGGA" in line:
+                    elements = line.split(",")
+                    self.parse_gga(elements)
 
 def main():
     gps = AdafruitGPS("/dev/ttyUSB0")
