@@ -51,15 +51,16 @@ class AdafruitGPS():
 
     def parse_rmc(self, elements):
         self.valid = True if elements[2] == "A" else False
+        if self.valid == False:
+            return
         self.latitude = self.calc_coordinate(elements[3], elements[4])
         self.longitude = self.calc_coordinate(elements[5], elements[6])
-        self.date = self.parse_date(elements[9])
         self.time = self.parse_time(elements[1])
+        self.date = self.parse_date(elements[9])
 
     def parse_gga(self, elements):
-        # calculate quality
-        if int(elements[6]) == 0:
-            self.valid = False
+        self.valid = True if int(elements[6]) > 0 else False
+        if self.valid == False:
             return
         self.valid = True
         self.time = self.parse_time(elements[1])
