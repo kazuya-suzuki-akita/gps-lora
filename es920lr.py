@@ -40,7 +40,6 @@ class ES920LR():
         self.config.read(filename)
 
     def setParameters(self):
-        self.waitmsg("Select Mode [1.terminal or 2.processor]")
         self.sendcmd("2")
         self.sendcmd("x")
         self.sendcmd("a 2")
@@ -58,7 +57,6 @@ class ES920LR():
 
     def sendcmd(self, command):
         self.sendmsg(command)
-        self.readline()
         time.sleep(0.1)
 
     def sendmsg(self, message):
