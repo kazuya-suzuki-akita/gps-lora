@@ -24,7 +24,7 @@ class AdafruitGPS():
     def write(self, msg):
         self.serial.write(msg.encode('utf-8'))
 
-    def calc_coordinate(data, direction):
+    def calc_coordinate(self, data, direction):
         value = float(data) / 100
         degree = int(value)
         minutes = ( value - degree ) / 0.6
@@ -40,7 +40,7 @@ class AdafruitGPS():
         else:
             valid = False
 
-        # calculate latidude
+        # calculate latitude
         self.latitude = self.calc_coordinate(elements[3], elements[4])
 
         # calculate longitude
@@ -69,7 +69,7 @@ class AdafruitGPS():
         second = int(time_string[4:6])
         self.time = datetime.time(hour, minute, second)
 
-        # calculate latidude
+        # calculate latitude
         self.latitude = self.calc_coordinate(elements[2], elements[3])
 
         # calculate longitude
@@ -87,7 +87,7 @@ class AdafruitGPS():
         # calculate geoidal separation
         self.separation = float(elements[11])
 
-        return self.latidude, self.longitude, self.valid, self.time, self.altitude, self.separation
+        return self.latitude, self.longitude, self.valid, self.time, self.altitude, self.separation
 
 def main():
     gps = AdafruitGPS("/dev/ttyUSB0")
@@ -99,7 +99,7 @@ def main():
             print(latitude, longitude, sep=',')
         if "$GPGGA" in line:
             elements = line.split(",")
-            latidude, longitude, valid, time, altitude, separation = gps.parse_gga(elements)
+            latitude, longitude, valid, time, altitude, separation = gps.parse_gga(elements)
             print(latitude, longitude, altitude, sep=',')
 
 if __name__ == "__main__":
