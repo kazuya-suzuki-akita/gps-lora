@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import serial
-from datetime import date, time
+import threadingfrom datetime import date, time
 
 class AdafruitGPS():
     def __init__(self, dev):
@@ -12,6 +12,7 @@ class AdafruitGPS():
         self.altitude = 0.0
         self.separation = 0.0
         self.valid = False
+        self.lock = threading.Lock()
 
     def readline(self, timeout = None):
         if timeout != None:
@@ -51,28 +52,45 @@ class AdafruitGPS():
 
     def parse_rmc(self, elements):
         try:
-            self.valid = True if elements[2] == "A" else False
-            if self.valid == False:
-                return
-            self.latitude = self.calc_coordinate(elements[3], elements[4])
-            self.longitude = self.calc_coordinate(elements[5], elements[6])
-            self.time = self.parse_time(elements[1])
-            self.date = self.parse_date(elements[9])
+            valid = True if elements[2] == "A" else False
+            if valid == False:
+                raise
+            latitude = self.calc_coordinate(elements[3], elements[4])
+            longitude = self.calc_coordinate(elements[5], elements[6])
+            current_time = self.parse_time(elements[1])
+            today = self.parse_date(elements[9])
+        else:
+            with self.lock:
+                self.valid = valid
+                self.latitude = latitude
+                self.longitude = longitude
+                self.time = current_time
+                self.date = today
         except:
-            self.valid = False
+            with self.lock:
+                self.valid = False
 
     def parse_gga(self, elements):
         try:
-            self.valid = True if int(elements[6]) > 0 else False
-            if self.valid == False:
-                return
-            self.time = self.parse_time(elements[1])
-            self.latitude = self.calc_coordinate(elements[2], elements[3])
-            self.longitude = self.calc_coordinate(elements[4], elements[5])
-            self.altitude = float(elements[9])
-            self.separation = float(elements[11])
+            valid = True if int(elements[6]) > 0 else False
+            if valid == False:
+                raise
+            currnet_time = self.parse_time(elements[1])
+            latitude = self.calc_coordinate(elements[2], elements[3])
+            longitude = self.calc_coordinate(elements[4], elements[5])
+            altitude = float(elements[9])
+            separation = float(elements[11])
+        else:
+            with self.lock:
+                self.valid = valid
+                self.latitude = latitude
+                self.longitude = longitude
+                self.time = current_time
+                self.altitude = altitude
+                self.separation = separation
         except:
-            self.valid = False
+            with self.lock:
+                self.valid = False
 
 def main():
     gps = AdafruitGPS("/dev/ttyUSB0")
