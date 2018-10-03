@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 import serial
-import threadingfrom datetime import date, time
+import threading
+from datetime import date, time
 
 class AdafruitGPS():
     def __init__(self, dev):
@@ -59,6 +60,9 @@ class AdafruitGPS():
             longitude = self.calc_coordinate(elements[5], elements[6])
             current_time = self.parse_time(elements[1])
             today = self.parse_date(elements[9])
+        except:
+            with self.lock:
+                self.valid = False
         else:
             with self.lock:
                 self.valid = valid
@@ -66,9 +70,6 @@ class AdafruitGPS():
                 self.longitude = longitude
                 self.time = current_time
                 self.date = today
-        except:
-            with self.lock:
-                self.valid = False
 
     def parse_gga(self, elements):
         try:
@@ -80,6 +81,9 @@ class AdafruitGPS():
             longitude = self.calc_coordinate(elements[4], elements[5])
             altitude = float(elements[9])
             separation = float(elements[11])
+        except:
+            with self.lock:
+                self.valid = False
         else:
             with self.lock:
                 self.valid = valid
@@ -88,9 +92,6 @@ class AdafruitGPS():
                 self.time = current_time
                 self.altitude = altitude
                 self.separation = separation
-        except:
-            with self.lock:
-                self.valid = False
 
 def main():
     gps = AdafruitGPS("/dev/ttyUSB0")
