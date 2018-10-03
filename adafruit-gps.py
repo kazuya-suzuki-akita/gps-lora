@@ -41,10 +41,10 @@ class AdafruitGPS():
             valid = False
 
         # calculate latidude
-        self.latitude = calc_coordinate(elements[3], elements[4])
+        self.latitude = self.calc_coordinate(elements[3], elements[4])
 
         # calculate longitude
-        self.longitude = calc_coordinate(elements[5], elements[6])
+        self.longitude = self.calc_coordinate(elements[5], elements[6])
 
         # calculate time
         date_string = elements[9]
@@ -70,10 +70,10 @@ class AdafruitGPS():
         self.time = datetime.time(hour, minute, second)
 
         # calculate latidude
-        self.latitude = calc_coordinate(elements[2], elements[3])
+        self.latitude = self.calc_coordinate(elements[2], elements[3])
 
         # calculate longitude
-        self.longitude = calc_coordinate(elements[4], elements[5])
+        self.longitude = self.calc_coordinate(elements[4], elements[5])
 
         # calculate quality
         if int(elements[6]) == 0:
