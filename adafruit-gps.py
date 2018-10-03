@@ -53,8 +53,8 @@ class AdafruitGPS():
         self.valid = True if elements[2] == "A" else False
         self.latitude = self.calc_coordinate(elements[3], elements[4])
         self.longitude = self.calc_coordinate(elements[5], elements[6])
-        self.date = parse_date(elements[9])
-        self.time = parse_time(elements[1])
+        self.date = self.parse_date(elements[9])
+        self.time = self.parse_time(elements[1])
 
     def parse_gga(self, elements):
         # calculate quality
@@ -62,7 +62,7 @@ class AdafruitGPS():
             self.valid = False
             return
         self.valid = True
-        self.time = parse_time(elements[1])
+        self.time = self.parse_time(elements[1])
         self.latitude = self.calc_coordinate(elements[2], elements[3])
         self.longitude = self.calc_coordinate(elements[4], elements[5])
         self.altitude = float(elements[9])
