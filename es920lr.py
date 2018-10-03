@@ -92,8 +92,12 @@ class ES920LR():
 
     def recieve_loop(self):
         while True:
-            line = str(self.readline(), encoding="utf-8")
-            print(line)
+            try:
+                line = str(self.readline(), encoding="utf-8")
+            except:
+                pass
+            else:
+                print(line)
 
 def main():
     lora = ES920LR("/dev/ttyUSB1")
