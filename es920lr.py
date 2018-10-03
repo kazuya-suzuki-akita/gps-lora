@@ -3,9 +3,9 @@
 import serial
 import RPi.GPIO as GPIO
 import time
-from time import sleep
 import struct
 from configparser import ConfigParser
+import threading
 
 ResetPin = 12
 
@@ -18,22 +18,29 @@ class ES920LR():
 
         self.dev = dev
         self.serial = serial.Serial(dev, 115200)
+        self.lock = threading.Lock()
 
         self.reset()
-        sleep(2.5)
+        time.sleep(2.5)
         self.readConfig(filename)
         self.setParameters()
 
     def reset(self):
         GPIO.output(ResetPin, 0)
-        sleep(0.1)
+        time.sleep(0.1)
         GPIO.output(ResetPin, 1)
+
+    def waitmsg(self, msg):
+        line = self.readline()
+        while line != msg:
+            line = self.readline()
 
     def readConfig(self, filename):
         self.config = ConfigParser()
         self.config.read(filename)
 
     def setParameters(self):
+        self.waitmsg("****")
         self.sendcmd("2")
         self.sendcmd("x")
         self.sendcmd("a 2")
@@ -51,7 +58,8 @@ class ES920LR():
 
     def sendcmd(self, command):
         self.sendmsg(command)
-        sleep(0.1)
+        self.readline()
+        time.sleep(0.1)
 
     def sendmsg(self, message):
         line = "{0}\r\n".format(message).encode('utf-8')
@@ -79,11 +87,21 @@ class ES920LR():
         msg = data[3].decode('utf-8')
         return (rssi, panid, srcid, msg)
 
+    def send_loop(self):
+        while True:
+            self.sendmsg("test")
+            time.sleep(10)
+
+    def recieve_loop(self):
+        while True:
+            line = str(self.readline(), encoding="utf-8")
+            print(line)
+
 def main():
     lora = ES920LR("/dev/ttyUSB1")
     while True:
         lora.sendmsg("test")
-        sleep(10)
+        time.sleep(10)
 
 if __name__ == "__main__":
     main()
