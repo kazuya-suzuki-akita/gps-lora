@@ -76,7 +76,7 @@ class AdafruitGPS():
             valid = True if int(elements[6]) > 0 else False
             if valid == False:
                 raise
-            currnet_time = self.parse_time(elements[1])
+            current_time = self.parse_time(elements[1])
             latitude = self.calc_coordinate(elements[2], elements[3])
             longitude = self.calc_coordinate(elements[4], elements[5])
             altitude = float(elements[9])
