@@ -4,6 +4,8 @@ import serial
 import threading
 from datetime import date, time
 
+JST = timezone(timedelta(hours=+9), 'JST')
+
 class AdafruitGPS():
     def __init__(self, dev):
         self.serial = serial.Serial(dev, 9600)
@@ -44,7 +46,7 @@ class AdafruitGPS():
         hour = int(time_string[0:2])
         minute = int(time_string[2:4])
         second = int(time_string[4:6])
-        microsecond = int(time_string[7:10])
+        microsecond = int(time_string[7:10]) * 1000
         return time(hour, minute, second, microsecond)
 
     def parse_date(self, date_string):
