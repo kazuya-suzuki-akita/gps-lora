@@ -44,7 +44,8 @@ class AdafruitGPS():
         hour = int(time_string[0:2])
         minute = int(time_string[2:4])
         second = int(time_string[4:6])
-        return time(hour, minute, second)
+        microsecond = int(time_string[7:10])
+        return time(hour, minute, second, microsecond)
 
     def parse_date(self, date_string):
         year = 2000 + int(date_string[4:6])
