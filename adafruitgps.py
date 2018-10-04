@@ -6,17 +6,9 @@ from datetime import date, time
 
 JST = timezone(timedelta(hours=+9), 'JST')
 
-class AdafruitGPS():
+class AdafruitGPSDevice():
     def __init__(self, dev):
         self.serial = serial.Serial(dev, 9600)
-        self.date = date.today()
-        self.time = time(0, 0, 0)
-        self.latitude = 0.0
-        self.longitude = 0.0
-        self.altitude = 0.0
-        self.separation = 0.0
-        self.valid = False
-        self.lock = threading.Lock()
 
     def readline(self, timeout = None):
         if timeout != None:
@@ -32,6 +24,18 @@ class AdafruitGPS():
 
     def write(self, msg):
         self.serial.write(msg.encode('utf-8'))
+
+class AdafruitGPS():
+    def __init__(self, dev):
+        self.device = AdafruitGPSDevice(dev)
+        self.date = date.today()
+        self.time = time(0, 0, 0)
+        self.latitude = 0.0
+        self.longitude = 0.0
+        self.altitude = 0.0
+        self.separation = 0.0
+        self.valid = False
+        self.lock = threading.Lock()
 
     def calc_coordinate(self, data, direction):
         value = float(data) / 100
@@ -100,7 +104,7 @@ class AdafruitGPS():
     def loop(self):
         while True:
             try:
-                line = str(self.readline(), encoding='utf-8')
+                line = str(self.device.readline(), encoding='utf-8')
             except:
                 pass
             else:
@@ -114,7 +118,7 @@ class AdafruitGPS():
 def main():
     gps = AdafruitGPS("/dev/ttyUSB0")
     while True:
-        line = str(gps.readline(), encoding='utf-8')
+        line = str(gps.device.readline(), encoding='utf-8')
         if "$GPRMC" in line:
             elements = line.split(",")
             gps.parse_rmc(elements)
