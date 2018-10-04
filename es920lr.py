@@ -89,8 +89,10 @@ class ES920LR():
         while True:
             with gps.lock:
                 valid_str = 'T' if gps.valid == True else 'F'
-                msg = '{},{:.5f},{:.5f},{},{},{}'.format(gps.time.strftime('%H%M%S%f'),
-                    gps.latitude, gps.longitude, gps.altitude, gps.separation, valid_str)
+                msg = '{}{},{:.5f},{:.5f},{},{},{}'.format(
+                    gps.date.strftime('%y%m%d'), gps.time.strftime('%H%M%S'),
+                    gps.latitude, gps.longitude, gps.altitude, gps.separation,
+                    valid_str)
             self.sendmsg(msg)
             time.sleep(10)
 
