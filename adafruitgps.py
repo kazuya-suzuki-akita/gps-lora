@@ -25,6 +25,10 @@ class AdafruitGPSDevice():
     def write(self, msg):
         self.serial.write(msg.encode('utf-8'))
 
+    def reset(self):
+        self.serial.close()
+        self.serial.open()
+
 class AdafruitGPS():
     def __init__(self, dev):
         self.date = date.today()
@@ -116,6 +120,7 @@ class AdafruitGPS():
     def loop(self):
         while True:
             try:
+                self.device.reset()
                 line = str(self.device.readline(), encoding='utf-8')
             except:
                 pass
