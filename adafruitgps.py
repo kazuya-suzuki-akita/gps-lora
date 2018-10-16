@@ -38,6 +38,7 @@ class AdafruitGPS():
 
         self.device = AdafruitGPSDevice(dev)
         self.device.write(self.add_cksum("$PMTK220,1000") + '\r\n')
+        self.device.write(self.add_cksum("$PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0") + '\r\n')        
 
     def add_cksum(self, msg):
         sum = 0
