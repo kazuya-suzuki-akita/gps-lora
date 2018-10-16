@@ -41,7 +41,7 @@ class AdafruitGPS():
         self.device.write(self.add_cksum("$PMTK220,1000") + '\r\n')
 
     def add_cksum(self, msg):
-        sum = 0
+        sum = b'$'
         for ch in codecs.iterencode(msg, 'utf-8'):
             sum ^= ch
         return msg + "*" + str(sum)
