@@ -2,7 +2,6 @@
 
 import serial
 import threading
-import codecs
 from datetime import date, time, timezone, timedelta
 
 JST = timezone(timedelta(hours=+9), 'JST')
@@ -42,7 +41,7 @@ class AdafruitGPS():
 
     def add_cksum(self, msg):
         sum = b'$'
-        for ch in codecs.iterencode(msg, 'utf-8'):
+        for ch in bytearray(msg, 'utf-8'):
             sum ^= ch
         return msg + "*" + str(sum)
 
