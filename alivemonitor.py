@@ -17,3 +17,10 @@ class AliveMonitor():
             sleep(0.2)
             GPIO.output(LEDPin, 0)
             sleep(0.2)
+
+def main():
+    monitor = AliveMonitor()
+    monitor.loop()
+
+if __name__ == "__main__":
+    main()
