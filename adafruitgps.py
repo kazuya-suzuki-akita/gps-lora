@@ -40,10 +40,13 @@ class AdafruitGPS():
         self.device.write(self.add_cksum("$PMTK220,1000") + '\r\n')
 
     def add_cksum(self, msg):
-        sum = b'$'
-        for ch in bytearray(msg, 'utf-8'):
-            sum ^= ch
-        return msg + "*" + str(sum)
+        sum = 0
+        char_list = list(msg)
+        char_list.pop(0)
+        for ch in char_list:
+            sum ^= ord(ch)
+        sum_str = format(sum, '02x')
+        return msg + "*" + sum_str
 
     def calc_coordinate(self, data, direction):
         value = float(data) / 100
