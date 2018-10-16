@@ -7,8 +7,8 @@ from es920lr import ES920LR
 from alivemonitor import AliveMonitor
 
 def main():
-    gps = AdafruitGPS("/dev/ttyUSB0")
-    lora = ES920LR("/dev/ttyUSB1")
+    gps = AdafruitGPS("/dev/ttyS0")
+    lora = ES920LR("/dev/ttyUSB0")
     monitor = AliveMonitor()
 
     thread_gps = threading.Thread(target=gps.loop)
