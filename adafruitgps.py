@@ -122,7 +122,8 @@ class AdafruitGPS():
             try:
                 self.device.reset()
                 line = str(self.device.readline(), encoding='utf-8')
-            except:
+            except Exception as e:
+                print(e.args)
                 pass
             else:
                 if "$GPRMC" in line:
