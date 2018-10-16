@@ -79,43 +79,43 @@ class AdafruitGPS():
         try:
             valid = True if elements[2] == "A" else False
             if valid == False:
-                raise
-            latitude = self.calc_coordinate(elements[3], elements[4])
-            longitude = self.calc_coordinate(elements[5], elements[6])
-            current_time = self.parse_time(elements[1])
-            today = self.parse_date(elements[9])
+                with self.lock:
+                    self.valid = False
+            else:
+                latitude = self.calc_coordinate(elements[3], elements[4])
+                longitude = self.calc_coordinate(elements[5], elements[6])
+                current_time = self.parse_time(elements[1])
+                today = self.parse_date(elements[9])
+                with self.lock:
+                    self.valid = valid
+                    self.latitude = latitude
+                    self.longitude = longitude
+                    self.time = current_time
+                    self.date = today
         except:
-            with self.lock:
-                self.valid = False
-        else:
-            with self.lock:
-                self.valid = valid
-                self.latitude = latitude
-                self.longitude = longitude
-                self.time = current_time
-                self.date = today
+            pass
 
     def parse_gga(self, elements):
         try:
             valid = True if int(elements[6]) > 0 else False
             if valid == False:
-                raise
-            current_time = self.parse_time(elements[1])
-            latitude = self.calc_coordinate(elements[2], elements[3])
-            longitude = self.calc_coordinate(elements[4], elements[5])
-            altitude = float(elements[9])
-            separation = float(elements[11])
+                with self.lock:
+                    self.valid = False
+            else:
+                current_time = self.parse_time(elements[1])
+                latitude = self.calc_coordinate(elements[2], elements[3])
+                longitude = self.calc_coordinate(elements[4], elements[5])
+                altitude = float(elements[9])
+                separation = float(elements[11])
+                with self.lock:
+                    self.valid = valid
+                    self.latitude = latitude
+                    self.longitude = longitude
+                    self.time = current_time
+                    self.altitude = altitude
+                    self.separation = separation
         except:
-            with self.lock:
-                self.valid = False
-        else:
-            with self.lock:
-                self.valid = valid
-                self.latitude = latitude
-                self.longitude = longitude
-                self.time = current_time
-                self.altitude = altitude
-                self.separation = separation
+            pass
 
     def loop(self):
         while True:
