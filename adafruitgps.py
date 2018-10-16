@@ -2,6 +2,7 @@
 
 import serial
 import threading
+import codecs
 from datetime import date, time, timezone, timedelta
 
 JST = timezone(timedelta(hours=+9), 'JST')
@@ -27,7 +28,6 @@ class AdafruitGPSDevice():
 
 class AdafruitGPS():
     def __init__(self, dev):
-        self.device = AdafruitGPSDevice(dev)
         self.date = date.today()
         self.time = time(0, 0, 0)
         self.latitude = 0.0
@@ -36,6 +36,15 @@ class AdafruitGPS():
         self.separation = 0.0
         self.valid = False
         self.lock = threading.Lock()
+
+        self.device = AdafruitGPSDevice(dev)
+        self.device.write(self.add_cksum("$PMTK220,1000") + '\r\n')
+
+    def add_cksum(self, msg):
+        sum = 0
+        for ch in codecs.iterencode(msg, 'utf-8'):
+            sum ^= ch
+        return msg + "*" + str(sum)
 
     def calc_coordinate(self, data, direction):
         value = float(data) / 100
