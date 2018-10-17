@@ -73,6 +73,7 @@ class ES920LR():
 
         log = now.strftime('%Y%m%d%H%M%S,') + message + '\n'
         self.logfile.write(log)
+        self.logfile.flush()
 
     def readline(self, timeout = None):
         if timeout != None:
