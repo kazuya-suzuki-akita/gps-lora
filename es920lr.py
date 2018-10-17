@@ -62,14 +62,14 @@ class ES920LR():
 
     def sendcmd(self, command):
         line = command + '\r\n'
-        self.serial.write(line.encode('utf-8')
+        self.serial.write(line.encode('utf-8'))
         time.sleep(0.1)
 
     def sendmsg(self, message):
         now = datetime.now()
 
         line = message + '\r\n'
-        self.serial.write(line)
+        self.serial.write(line.encode('utf-8'))
 
         log = now.strftime('%Y%m%d%H%M%S,') + message + '\n'
         self.logfile.write(log)
