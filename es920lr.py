@@ -22,8 +22,8 @@ class ES920LR():
         self.lock = threading.Lock()
 
         now = datetime.now()
-        logfile = now.strftime('log-%Y%m%d%H%M%S.log', 'w')
-        self.logfile = open(logfile)
+        logfile = now.strftime('log-%Y%m%d%H%M%S.log')
+        self.logfile = open(logfile, 'w')
 
         self.reset()
         time.sleep(2.5)
