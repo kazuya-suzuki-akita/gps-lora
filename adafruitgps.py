@@ -39,10 +39,7 @@ class AdafruitGPS():
         self.separation = 0.0
         self.valid = False
         self.lock = threading.Lock()
-
         self.device = AdafruitGPSDevice(dev)
-        self.device.write(self.add_cksum("$PMTK220,1000") + '\r\n')
-        self.device.write(self.add_cksum("$PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0") + '\r\n')        
 
     def add_cksum(self, msg):
         sum = 0
@@ -134,7 +131,7 @@ class AdafruitGPS():
                     self.parse_gga(elements)
 
 def main():
-    gps = AdafruitGPS("/dev/ttyUSB0")
+    gps = AdafruitGPS("/dev/ttyS0")
     while True:
         line = str(gps.device.readline(), encoding='utf-8')
         if "$GPRMC" in line:
