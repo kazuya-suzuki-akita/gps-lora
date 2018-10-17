@@ -67,11 +67,11 @@ class ES920LR():
     def sendmsg(self, message):
         now = datetime.now()
 
-        line = "{0}".format(message).encode('utf-8')
-        self.serial.write(line + "\r\n")
+        line = "{0}\r\n".format(message).encode('utf-8')
+        self.serial.write(line)
 
-        log = now.strftime(now.strftime('%Y%m%d%H%M%S,' + line + '\n'))
-        self.logfile.write(log)
+        log = now.strftime('%Y%m%d%H%M%S,') + message + '\n'
+        self.logfile.write(log.encode('utf-8')
 
     def readline(self, timeout = None):
         if timeout != None:
