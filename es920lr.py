@@ -4,10 +4,11 @@ import serial
 import RPi.GPIO as GPIO
 import time
 import struct
-from configparser import ConfigParser
 import threading
+from configparser import ConfigParser
+from datetime import datetime
 
-ResetPin = 12
+ResetPin = 37
 
 class ES920LR():
     def __init__(self, dev, configfile="./config.ini"):
