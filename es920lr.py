@@ -61,17 +61,18 @@ class ES920LR():
         self.sendcmd("z")
 
     def sendcmd(self, command):
-        self.sendmsg(command)
+        line = command + '\r\n'
+        self.serial.write(line.encode('utf-8')
         time.sleep(0.1)
 
     def sendmsg(self, message):
         now = datetime.now()
 
-        line = "{0}\r\n".format(message).encode('utf-8')
+        line = message + '\r\n'
         self.serial.write(line)
 
         log = now.strftime('%Y%m%d%H%M%S,') + message + '\n'
-        self.logfile.write(log.encode('utf-8')
+        self.logfile.write(log)
 
     def readline(self, timeout = None):
         if timeout != None:
