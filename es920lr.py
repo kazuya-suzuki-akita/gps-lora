@@ -10,7 +10,7 @@ import threading
 ResetPin = 12
 
 class ES920LR():
-    def __init__(self, dev, filename="./config.ini"):
+    def __init__(self, dev, configfile="./config.ini"):
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
         GPIO.setup(ResetPin, GPIO.OUT)
@@ -20,9 +20,13 @@ class ES920LR():
         self.serial = serial.Serial(dev, 115200)
         self.lock = threading.Lock()
 
+        now = datetime.now()
+        logfile = now.strftime('log-%Y%m%d%H%M%S.log', 'w')
+        self.logfile = open(logfile)
+
         self.reset()
         time.sleep(2.5)
-        self.readConfig(filename)
+        self.readConfig(configfile)
         self.setParameters()
 
     def reset(self):
@@ -60,8 +64,13 @@ class ES920LR():
         time.sleep(0.1)
 
     def sendmsg(self, message):
-        line = "{0}\r\n".format(message).encode('utf-8')
-        self.serial.write(line)
+        now = datetime.now()
+
+        line = "{0}".format(message).encode('utf-8')
+        self.serial.write(line + "\r\n")
+
+        log = now.strftime(now.strftime('%Y%m%d%H%M%S,' + line + '\n')
+        self.logfile.write(log)
 
     def readline(self, timeout = None):
         if timeout != None:
