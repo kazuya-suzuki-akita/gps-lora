@@ -12,6 +12,7 @@ class ES920LR():
     def __init__(self, dev, configfile="./config.ini"):
         self.readConfig(configfile)
 
+        self.resetpin = self.config['LoRa']['resetpin']
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
         GPIO.setup(self.resetpin, GPIO.OUT)
@@ -28,7 +29,6 @@ class ES920LR():
         self.reset()
         time.sleep(2.5)
         self.setParameters()
-        self.resetpin = self.config['LoRa']['resetpin']
         
     def reset(self):
         GPIO.output(self.resetpin, 0)
