@@ -7,9 +7,9 @@ from datetime import datetime
 from es920lr import ES920LR
 
 def main():
-    device = argv[1]
-    config = argv[2]
-    logprefix = argv[3]
+    device = sys.argv[1]
+    config = sys.argv[2]
+    logprefix = sys.argv[3]
 
     lora = ES920LR(device, config)
 
