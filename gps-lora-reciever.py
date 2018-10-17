@@ -8,8 +8,11 @@ def main():
     lora = ES920LR("/dev/ttyUSB0", "./config-USB0.ini")
 
     while True:
-        line = self.readline()
-        print(line)    
+        line = lora.readline()
+        if !line[0:7].isalnum():
+            continue
+        rssi, panid, srcid, msg = lora.parse(line)
+        print('{},{},{},{}'.format(rssi, panid, srcid, msg)
 
 if __name__ == "__main__":
     main()
