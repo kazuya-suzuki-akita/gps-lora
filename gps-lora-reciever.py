@@ -23,7 +23,7 @@ def main():
         now = datetime.now()
         now_str = now.strftime('%Y%m%d%H%M%S')
         print('{},{},{}'.format(now_str, msg, rssi))
-        f.write('{},{},{}'.format(now_str, msg, rssi))
+        f.write('{},{},{}\n'.format(now_str, msg, rssi))
         f.flush()
 
 if __name__ == "__main__":
