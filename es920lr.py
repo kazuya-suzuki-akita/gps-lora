@@ -8,14 +8,14 @@ import threading
 from configparser import ConfigParser
 from datetime import datetime
 
-ResetPin = 37
-
 class ES920LR():
     def __init__(self, dev, configfile="./config.ini"):
+        self.readConfig(configfile)
+
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
-        GPIO.setup(ResetPin, GPIO.OUT)
-        GPIO.output(ResetPin, 1)
+        GPIO.setup(self.resetpin, GPIO.OUT)
+        GPIO.output(self.resetpin, 1)
 
         self.dev = dev
         self.serial = serial.Serial(dev, 115200)
@@ -27,13 +27,13 @@ class ES920LR():
 
         self.reset()
         time.sleep(2.5)
-        self.readConfig(configfile)
         self.setParameters()
-
+        self.resetpin = self.config['LoRa']['resetpin']
+        
     def reset(self):
-        GPIO.output(ResetPin, 0)
+        GPIO.output(self.resetpin, 0)
         time.sleep(0.1)
-        GPIO.output(ResetPin, 1)
+        GPIO.output(self.resetpin, 1)
 
     def waitmsg(self, msg):
         line = str(self.readline(), encoding='utf-8')
