@@ -69,7 +69,7 @@ class ES920LR():
         line = "{0}".format(message).encode('utf-8')
         self.serial.write(line + "\r\n")
 
-        log = now.strftime(now.strftime('%Y%m%d%H%M%S,' + line + '\n')
+        log = now.strftime(now.strftime('%Y%m%d%H%M%S,' + line + '\n'))
         self.logfile.write(log)
 
     def readline(self, timeout = None):
