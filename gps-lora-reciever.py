@@ -6,10 +6,12 @@ import threading
 from datetime import datetime
 from es920lr import ES920LR
 
-logprefix = 'lora-sf7-'
-
 def main():
-    lora = ES920LR("/dev/ttyUSB0", "./config-USB0.ini")
+    device = argv[1]
+    config = argv[2]
+    logprefix = argv[3]
+
+    lora = ES920LR(device, config)
 
     now = datetime.now()
     logfile = now.strftime(logprefix + '%Y%m%d%H%M%S.log')
