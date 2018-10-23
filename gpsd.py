@@ -8,7 +8,7 @@ class GPSD():
         self.socket.watch()
 
     def loop(self):
-        for new_data in gps_socket:
+        for new_data in self.socket:
             if new_data:
                 data_stream.unpack(new_data)
                 if data_stream.TPV['status'] != 2:
