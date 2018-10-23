@@ -9,6 +9,8 @@ from configparser import ConfigParser
 from datetime import datetime
 from receivemonitor import ReceiveMonitor
 
+ACKMSG = 'Received'
+
 class ES920LR():
     def __init__(self, config):
         self.config = config
@@ -110,7 +112,7 @@ class ES920LR():
         while True:
             try:
                 line = str(self.readline(), encoding='utf-8')
-                if 'OK' in line:
+                if ACKMSG in line:
                     monitor.update()
                     print('updated')
             except:
@@ -118,8 +120,7 @@ class ES920LR():
 
     def base_send_loop(self):
         while True:
-            msg = 'OK'
-            self.sendmsg(msg)
+            self.sendmsg(ACKMSG)
             time.sleep(10)
 
 def main():
