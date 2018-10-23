@@ -8,11 +8,12 @@ class GPSD():
         self.socket.connect()
         self.socket.watch()
         self.lock = threading.Lock()
+        self.valid = False
 
     def loop(self):
         for new_data in self.socket:
             if new_data:
-                seld.data_stream.unpack(new_data)
+                self.data_stream.unpack(new_data)
                 if self.data_stream.TPV['status'] != 2:
                     self.valid = False
                     continue
