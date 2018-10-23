@@ -3,8 +3,8 @@
 
 import sys
 import threading
-from adafruitgps import AdafruitGPS
 from es920lr import ES920LR
+from gpsd import GPSD
 from alivemonitor import AliveMonitor
 from configparser import ConfigParser
 
@@ -16,8 +16,8 @@ def main():
     thread_monitor = threading.Thread(target=monitor.loop)
     thread_monitor.start()
 
-    gps = AdafruitGPS(config)
-    thread_gps = threading.Thread(target=gps.loop)
+    gpsd = GPSD()
+    thread_gps = threading.Thread(target=gpsd.loop)
     thread_gps.start()
 
     lora = ES920LR(config)
