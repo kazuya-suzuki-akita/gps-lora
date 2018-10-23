@@ -2,7 +2,7 @@
 
 import threading
 import RPi.GPIO as GPIO
-from datetime import datetime
+from datetime import datetime, timedelta
 from time import sleep
 
 class ReceiveMonitor():
@@ -13,7 +13,7 @@ class ReceiveMonitor():
         GPIO.setwarnings(False)
         GPIO.setup(self.ledpin, GPIO.OUT)
 
-        self.updated = datetime.now() - datetime.timedelta(seconds=25)
+        self.updated = datetime.now() - timedelta(seconds=25)
 
     def update(self):
         self.updated = datetime.now()
