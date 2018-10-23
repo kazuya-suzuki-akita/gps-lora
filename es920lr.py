@@ -7,6 +7,7 @@ import struct
 import threading
 from configparser import ConfigParser
 from datetime import datetime
+from recievemonitor import RecieveMonitor
 
 class ES920LR():
     def __init__(self, config):
@@ -93,7 +94,7 @@ class ES920LR():
         msg = data[3].decode('utf-8')
         return (rssi, panid, srcid, msg)
 
-    def send_loop(self, gps):
+    def terminal_send_loop(self, gps):
         while True:
             with gps.lock:
                 valid_str = 'T' if gps.valid == True else 'F'
@@ -105,9 +106,14 @@ class ES920LR():
             self.sendmsg(msg)
             time.sleep(10)
 
-    def recieve_loop(self):
+    def terminal_recieve_loop(self, monitor):
         while True:
-            self.readline() # 読み捨て
+            try:
+                line = str(self.readline(), encoding='utf-8')
+                if 'OK' in line:
+                    monitor.update()
+            except:
+                pass
 
 def main():
     lora = ES920LR("/dev/ttyUSB1") # 要修正
