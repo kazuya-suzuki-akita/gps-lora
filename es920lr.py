@@ -112,6 +112,7 @@ class ES920LR():
                 line = str(self.readline(), encoding='utf-8')
                 if 'OK' in line:
                     monitor.update()
+                    print('updated')
             except:
                 pass
 

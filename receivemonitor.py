@@ -13,7 +13,7 @@ class ReceiveMonitor():
         GPIO.setwarnings(False)
         GPIO.setup(self.ledpin, GPIO.OUT)
 
-        self.updated = datetime.now()
+        self.updated = datetime.now() - datetime.timedelta(seconds=25)
 
     def update(self):
         self.updated = datetime.now()
