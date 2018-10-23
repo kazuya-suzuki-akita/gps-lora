@@ -26,7 +26,6 @@ def main():
         rssi, panid, srcid, msg = lora.parse(line)
         now = datetime.now()
         now_str = now.strftime('%Y%m%d%H%M%S')
-        print('{},{},{}'.format(now_str, msg, rssi))
         f.write('{},{},{}\n'.format(now_str, msg, rssi))
         f.flush()
 
