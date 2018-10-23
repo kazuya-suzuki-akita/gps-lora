@@ -14,7 +14,8 @@ class GPSD():
         for new_data in self.socket:
             if new_data:
                 self.data_stream.unpack(new_data)
-                if self.data_stream.TPV['mode'] < 2 :
+                mode = self.data_stream.TPV['mode']
+                if not mode.isdigit() or int(mode) < 2 :
                     self.valid = False
                     continue
                 self.valid = True
