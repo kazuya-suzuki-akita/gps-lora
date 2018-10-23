@@ -7,11 +7,11 @@ from time import sleep
 
 class ReceiveMonitor():
     def __init__(self, config):
-        ledpin = int(config['LED']['pin'])
+        self.ledpin = int(config['LED']['pin'])
 
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
-        GPIO.setup(ledpin, GPIO.OUT)
+        GPIO.setup(self.ledpin, GPIO.OUT)
 
         self.updated = datetime.now()
 
@@ -22,9 +22,9 @@ class ReceiveMonitor():
         while True:
             delta = ( datetime.now() - self.updated ).total_seconds()
             if delta < 20:
-                GPIO.output(LEDPin, 1)
+                GPIO.output(self.ledpin, 1)
                 sleep(0.5)
-                GPIO.output(LEDPin, 0)
+                GPIO.output(self.ledpin, 0)
                 sleep(0.5)
             else:
                 sleep(2)
