@@ -115,6 +115,12 @@ class ES920LR():
             except:
                 pass
 
+    def base_send_loop(self):
+        while True:
+            msg = 'OK'
+            self.sendmsg(msg)
+            time.sleep(10)
+
 def main():
     lora = ES920LR("/dev/ttyUSB1") # 要修正
     while True:

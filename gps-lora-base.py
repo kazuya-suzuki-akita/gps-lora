@@ -12,6 +12,8 @@ def main():
     config.read(sys.argv[1])
     
     lora = ES920LR(config)
+    thread_send = threading.Thread(target=base_send_loop)
+    thread_send.start()
 
     now = datetime.now()
     logprefix = "lora-sf" + config['LoRa']['sf']
