@@ -111,6 +111,7 @@ class ES920LR():
     def recieve_loop(self):
         while True:
             self.readline() # 読み捨て
+
 def main():
     lora = ES920LR("/dev/ttyUSB1")
     while True:
