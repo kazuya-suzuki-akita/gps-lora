@@ -8,15 +8,14 @@ from configparser import ConfigParser
 from es920lr import ES920LR
 
 def main():
-    logprefix = sys.argv[2]
-
     config = ConfigParser()
     config.read(sys.argv[1])
     
     lora = ES920LR(config)
 
     now = datetime.now()
-    logfile = now.strftime(logprefix + '%Y%m%d%H%M%S.log')
+    logprefix = "lora-sf" + config['LoRa']['sf']
+    logfile = now.strftime(logprefix + '-%Y%m%d%H%M%S.log')
     f = open(logfile, 'w')
     
     while True:
