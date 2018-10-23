@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # prototype
 
+import sys
 import threading
 from adafruitgps import AdafruitGPS
 from es920lr import ES920LR
