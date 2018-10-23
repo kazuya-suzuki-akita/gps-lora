@@ -4,14 +4,16 @@
 import sys
 import threading
 from datetime import datetime
+from configparser import ConfigParser
 from es920lr import ES920LR
 
 def main():
-    device = sys.argv[1]
-    config = sys.argv[2]
-    logprefix = sys.argv[3]
+    logprefix = sys.argv[2]
 
-    lora = ES920LR(device, config)
+    config = ConfigParser()
+    config.read(sys.argv[1])
+    
+    lora = ES920LR(config)
 
     now = datetime.now()
     logfile = now.strftime(logprefix + '%Y%m%d%H%M%S.log')

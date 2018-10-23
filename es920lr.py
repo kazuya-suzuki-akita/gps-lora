@@ -9,16 +9,16 @@ from configparser import ConfigParser
 from datetime import datetime
 
 class ES920LR():
-    def __init__(self, dev, configfile="./config.ini"):
-        self.readConfig(configfile)
-
+    def __init__(self, config):
+        self.config = config
+    
         self.resetpin = int(self.config['LoRa']['resetpin'])
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
         GPIO.setup(self.resetpin, GPIO.OUT)
         GPIO.output(self.resetpin, 1)
 
-        self.dev = dev
+        self.dev = self.config['LoRa']['device']
         self.serial = serial.Serial(dev, 115200)
         self.lock = threading.Lock()
 
@@ -39,10 +39,6 @@ class ES920LR():
         line = str(self.readline(), encoding='utf-8')
         while msg in line:
             line = str(self.readline(), encoding='utf-8')
-
-    def readConfig(self, filename):
-        self.config = ConfigParser()
-        self.config.read(filename)
 
     def setParameters(self):
         self.sendcmd("2")

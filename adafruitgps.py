@@ -7,7 +7,8 @@ from datetime import date, time, timezone, timedelta
 JST = timezone(timedelta(hours=+9), 'JST')
 
 class AdafruitGPSDevice():
-    def __init__(self, dev):
+    def __init__(self, config):
+        dev = config['GPS']['device']
         self.serial = serial.Serial(dev, 9600)
 
     def readline(self, timeout = None):
