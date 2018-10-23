@@ -1,4 +1,5 @@
 from gps3 import gps3
+import threading
 
 class GPSD():
     def __init__(self):
@@ -6,12 +7,13 @@ class GPSD():
         self.data_stream = gps3.DataStream()
         self.socket.connect()
         self.socket.watch()
+        self.lock = threading.Lock()
 
     def loop(self):
         for new_data in self.socket:
             if new_data:
-                data_stream.unpack(new_data)
-                if data_stream.TPV['status'] != 2:
+                seld.data_stream.unpack(new_data)
+                if self.data_stream.TPV['status'] != 2:
                     self.valid = False
                     continue
                 self.valid = True
