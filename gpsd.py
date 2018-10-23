@@ -19,8 +19,8 @@ class GPSD():
                     self.valid = False
                     continue
                 self.valid = True
-                self.latitude = data_stream.TPV['lat']
-                self.longitude = data_stream.TPV['lon']
-                self.altitude = data_stream.TPV['alt']
+                self.latitude = self.data_stream.TPV['lat']
+                self.longitude = self.data_stream.TPV['lon']
+                self.altitude = self.data_stream.TPV['alt']
                 self.separation = 0.0
                 
