@@ -5,7 +5,7 @@ import sys
 import threading
 from es920lr import ES920LR
 from gpsd import GPSD
-from recievemonitor import RecieveMonitor
+from receivemonitor import ReceiveMonitor
 from configparser import ConfigParser
 
 def main():
@@ -22,9 +22,9 @@ def main():
 
     lora = ES920LR(config)
     thread_sender = threading.Thread(target=lora.send_loop, args=(gpsd,))
-    thread_reciever = threading.Thread(target=lora.recieve_loop, args=(monitor,))
+    thread_receiver = threading.Thread(target=lora.receive_loop, args=(monitor,))
     thread_sender.start()
-    thread_reciever.start()
+    thread_receiver.start()
 
 if __name__ == "__main__":
     main()

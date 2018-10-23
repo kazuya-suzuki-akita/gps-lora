@@ -7,7 +7,7 @@ from time import sleep
 
 LEDPin = 36
 
-class RecieveMonitor():
+class ReceiveMonitor():
     def __init__(self):
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
@@ -33,7 +33,7 @@ class RecieveMonitor():
                 sleep(2)
 
 def main():
-    monitor = RecieveMonitor()
+    monitor = ReceiveMonitor()
     monitor.loop()
 
 if __name__ == "__main__":

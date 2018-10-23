@@ -7,7 +7,7 @@ import struct
 import threading
 from configparser import ConfigParser
 from datetime import datetime
-from recievemonitor import RecieveMonitor
+from receivemonitor import ReceiveMonitor
 
 class ES920LR():
     def __init__(self, config):
@@ -106,7 +106,7 @@ class ES920LR():
             self.sendmsg(msg)
             time.sleep(10)
 
-    def terminal_recieve_loop(self, monitor):
+    def terminal_receive_loop(self, monitor):
         while True:
             try:
                 line = str(self.readline(), encoding='utf-8')
