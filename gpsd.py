@@ -15,7 +15,7 @@ class GPSD():
             if new_data:
                 self.data_stream.unpack(new_data)
                 mode = self.data_stream.TPV['mode']
-                if not mode.isdigit() or int(mode) < 2 :
+                if not isinstance(mode, int) or mode < 2 :
                     self.valid = False
                     continue
                 self.valid = True
