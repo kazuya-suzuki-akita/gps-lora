@@ -5,15 +5,15 @@ import RPi.GPIO as GPIO
 from datetime import datetime
 from time import sleep
 
-LEDPin = 36
-
 class ReceiveMonitor():
-    def __init__(self):
+    def __init__(self, config):
+        ledpin = int(config['LED']['pin'])
+
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
-        GPIO.setup(LEDPin, GPIO.OUT)
+        GPIO.setup(ledpin, GPIO.OUT)
 
-        self.lock = threading.lock()
+        self.lock = threading.Lock()
         self.updated = datetime.now()
 
     def update(self):

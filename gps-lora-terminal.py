@@ -12,7 +12,7 @@ def main():
     config = ConfigParser()
     config.read(sys.argv[1])
     
-    monitor = ReceiveMonitor()
+    monitor = ReceiveMonitor(config)
     thread_monitor = threading.Thread(target=monitor.loop)
     thread_monitor.start()
 
