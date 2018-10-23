@@ -18,7 +18,7 @@ class ES920LR():
         GPIO.setup(self.resetpin, GPIO.OUT)
         GPIO.output(self.resetpin, 1)
 
-        self.dev = self.config['LoRa']['device']
+        dev = self.config['LoRa']['device']
         self.serial = serial.Serial(dev, 115200)
         self.lock = threading.Lock()
 
@@ -109,7 +109,7 @@ class ES920LR():
             self.readline() # 読み捨て
 
 def main():
-    lora = ES920LR("/dev/ttyUSB1")
+    lora = ES920LR("/dev/ttyUSB1") # 要修正
     while True:
         lora.sendmsg("test")
         time.sleep(10)
