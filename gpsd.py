@@ -7,7 +7,7 @@ class GPSD():
         self.socket.connect()
         self.socket.watch()
 
-def loop(self):
+    def loop(self):
         for new_data in gps_socket:
             if new_data:
                 data_stream.unpack(new_data)
