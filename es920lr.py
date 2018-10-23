@@ -114,7 +114,6 @@ class ES920LR():
                 line = str(self.readline(), encoding='utf-8')
                 if ACKMSG in line:
                     monitor.update()
-                    print('updated')
             except:
                 pass
 
