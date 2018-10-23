@@ -7,8 +7,14 @@ class GPSD():
         self.data_stream = gps3.DataStream()
         self.socket.connect()
         self.socket.watch()
-        self.lock = threading.Lock()
+
         self.valid = False
+        self.latitude = 0.0
+        self.longitude = 0.0
+        self.altitude = 0.0
+        self.separation = 0.0
+        
+        self.lock = threading.Lock()
 
     def loop(self):
         for new_data in self.socket:
