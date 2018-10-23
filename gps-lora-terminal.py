@@ -21,8 +21,8 @@ def main():
     thread_gps.start()
 
     lora = ES920LR(config)
-    thread_sender = threading.Thread(target=lora.send_loop, args=(gpsd,))
-    thread_receiver = threading.Thread(target=lora.receive_loop, args=(monitor,))
+    thread_sender = threading.Thread(target=lora.terminal_send_loop, args=(gpsd,))
+    thread_receiver = threading.Thread(target=lora.terminal_receive_loop, args=(monitor,))
     thread_sender.start()
     thread_receiver.start()
 
