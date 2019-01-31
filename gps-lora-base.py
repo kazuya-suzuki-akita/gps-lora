@@ -16,7 +16,7 @@ def main():
 #    thread_send.start()
 
     now = datetime.now()
-    logprefix = "lora-sf" + config['LoRa']['sf']
+    logprefix = "lora-r" + config['LoRa']['resetpin']
     logfile = now.strftime(logprefix + '-%Y%m%d%H%M%S.log')
     f = open(logfile, 'w')
     
