@@ -96,32 +96,6 @@ class ES920LR():
         msg = data[3].decode('utf-8')
         return (rssi, panid, srcid, msg)
 
-    def terminal_send_loop(self, gps):
-        while True:
-            with gps.lock:
-                valid_str = 'T' if gps.valid == True else 'F'
-                now = datetime.now()
-                msg = '{},{:.5f},{:.5f},{},{},{}'.format(
-                    now.strftime('%y%m%d%H%M%S'),
-                    gps.latitude, gps.longitude, gps.altitude, gps.separation,
-                    valid_str)
-            self.sendmsg(msg)
-            time.sleep(10)
-
-    def terminal_receive_loop(self, monitor):
-        while True:
-            try:
-                line = str(self.readline(), encoding='utf-8')
-                if ACKMSG in line:
-                    monitor.update()
-            except:
-                pass
-
-    def base_send_loop(self):
-        while True:
-            self.sendmsg(ACKMSG)
-            time.sleep(10)
-
 def main():
     lora = ES920LR("/dev/ttyUSB1") # 要修正
     while True:

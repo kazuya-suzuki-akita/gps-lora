@@ -7,12 +7,17 @@ from datetime import datetime
 from configparser import ConfigParser
 from es920lr import ES920LR
 
+def base_send_loop(lora):
+    while True:
+        lora.sendmsg(ACKMSG)
+        time.sleep(10)
+
 def main():
     config = ConfigParser()
     config.read(sys.argv[1])
     
     lora = ES920LR(config)
-#    thread_send = threading.Thread(target=lora.base_send_loop)
+#    thread_send = threading.Thread(target=base_send_loop,args=(lora,))
 #    thread_send.start()
 
     now = datetime.now()
