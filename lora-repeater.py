@@ -50,7 +50,7 @@ def main():
         if not line[0:7].isalnum():
             f.write('Received unknown message')
         else:
-            rssi, panid, srcid, msg = lora.parse(line)
+            rssi, panid, srcid, msg = lora_in.parse(line)
             now = datetime.now()
             now_str = now.strftime('%Y%m%d%H%M%S')
             f.write('{},{},{}\n'.format(now_str, msg, rssi))
