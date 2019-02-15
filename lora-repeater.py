@@ -10,8 +10,8 @@ from queue import Queue
 
 # default parameters
 maxretry = 3
-configfile_out = "repeater_out.ini"
-configfile_in = "repeater_in.ini"
+CONFIGFILE_OUT = "repeater_out.ini"
+CONFIGFILE_IN = "repeater_in.ini"
 
 def repeater_send_loop(lora, sendqueue):
     msg = sendqueue.get()
@@ -25,12 +25,16 @@ def repeater_send_loop(lora, sendqueue):
 def main():
     if len(sys.argv) >= 3:
         configfile_out = sys.argv[2]
+    else:
+        configfile_out = CONFIGFILE_OUT
     config_out = ConfigParser()
     config_out.read(configfile_out)
     lora_out = ES920LR(config_out)
 
     if len(sys.argv) >= 2:
         configfile_in = sys.argv[1]
+    else:
+        configfile_in = CONFIGFILE_IN
     config_in = ConfigParser()
     config_in.read(configfile_in)
     lora_in = ES920LR(config_in)
