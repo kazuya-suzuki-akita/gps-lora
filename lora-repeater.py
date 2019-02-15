@@ -58,7 +58,7 @@ def main():
             now = datetime.now()
             now_str = now.strftime('%Y%m%d%H%M%S')
             f.write('{},{},{}\n'.format(now_str, msg, rssi))
-            sendqueue.put(line)
+            sendqueue.put(msg)
         f.flush()
 
 if __name__ == "__main__":
