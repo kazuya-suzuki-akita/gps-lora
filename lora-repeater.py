@@ -30,7 +30,7 @@ def main():
     lora_out = ES920LR(config_out)
 
     if len(sys.argv) >= 2:
-        configfile_out = sys.argv[1]
+        configfile_in = sys.argv[1]
     config_in = ConfigParser()
     config_in.read(configfile_in)
     lora_in = ES920LR(config_in)
