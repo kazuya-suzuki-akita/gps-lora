@@ -2,6 +2,7 @@
 
 import sys
 import threading
+from time import sleep
 from datetime import datetime
 from configparser import ConfigParser
 from es920lr import ES920LR
@@ -16,7 +17,7 @@ def repeater_send_loop(lora, sendqueue):
     msg = sendqueue.get()
     for i in range(maxretry):
         lora.sendmsg(msg)
-        line = str(self.readline(), encoding='utf-8')
+        line = str(lora.readline(), encoding='utf-8')
         if 'OK' in line:
             break
         sleep(1)
@@ -40,7 +41,7 @@ def main():
     thread_send.start()
 
     now = datetime.now()
-    logprefix = "repeater-r" + config['LoRa']['resetpin']
+    logprefix = "repeater-r" + config_in['LoRa']['resetpin']
     logfile = now.strftime(logprefix + '-%Y%m%d%H%M%S.log')
     f = open(logfile, 'w')
 
