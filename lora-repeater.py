@@ -18,8 +18,8 @@ def send_loop(lora, sendqueue):
         msg = sendqueue.get()
         for i in range(maxretry):
             lora.sendmsg(msg)
-            line = str(lora.readline(), encoding='utf-8')
-            if 'OK' in line:
+            line = lora.readline()
+            if b'OK' in line:
                 break
             sleep(2)
 
