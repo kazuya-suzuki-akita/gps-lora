@@ -13,7 +13,7 @@ maxretry = 3
 CONFIGFILE_OUT = "repeater-out.ini"
 CONFIGFILE_IN = "repeater-in.ini"
 
-def repeater_send_loop(lora, sendqueue):
+def send_loop(lora, sendqueue):
     msg = sendqueue.get()
     for i in range(maxretry):
         lora.sendmsg(msg)
@@ -41,7 +41,7 @@ def main():
 
     sendqueue = Queue()
     thread_send = threading.Thread(
-        target=repeater_send_loop,args=(lora_out,sendqueue,))
+        target=send_loop,args=(lora_out,sendqueue,))
     thread_send.start()
 
     now = datetime.now()
