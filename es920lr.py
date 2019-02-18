@@ -65,7 +65,6 @@ class ES920LR():
         line = command + '\r\n'
         self.serial.write(line.encode('ascii'))
         self.waitmsg('OK')
-        time.sleep(0.1)
 
     def sendmsg(self, message):
         now = datetime.now()
