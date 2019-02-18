@@ -39,9 +39,9 @@ class ES920LR():
         GPIO.output(self.resetpin, 1)
 
     def waitmsg(self, msg):
-        line = str(self.readline(), encoding='utf-8')
+        line = str(self.readline(), encoding='ascii')
         while msg in line:
-            line = str(self.readline(), encoding='utf-8')
+            line = str(self.readline(), encoding='ascii')
 
     def setParameters(self):
         self.sendcmd("2")
@@ -61,14 +61,14 @@ class ES920LR():
 
     def sendcmd(self, command):
         line = command + '\r\n'
-        self.serial.write(line.encode('utf-8'))
+        self.serial.write(line.encode('ascii'))
         time.sleep(0.1)
 
     def sendmsg(self, message):
         now = datetime.now()
 
         line = message + '\r\n'
-        self.serial.write(line.encode('utf-8'))
+        self.serial.write(line.encode('ascii'))
 
         log = now.strftime('%Y%m%d%H%M%S,') + message + '\n'
         self.logfile.write(log)
@@ -93,7 +93,7 @@ class ES920LR():
         rssi = hex2i(data[0])
         panid = hex2i(data[1])
         srcid = hex2i(data[2])
-        msg = data[3].decode('utf-8')
+        msg = data[3].decode('ascii')
         return (rssi, panid, srcid, msg)
 
 def main():
