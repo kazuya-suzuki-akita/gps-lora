@@ -41,7 +41,7 @@ class ES920LR():
     def waitmsg(self, msg):
         # バイト列で比較
         line = self.readline()
-        while msg.encode('ascii') in line:
+        while not msg.encode('ascii') in line:
             line = self.readline()
     
     def setParameters(self):
