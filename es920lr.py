@@ -62,6 +62,7 @@ class ES920LR():
     def sendcmd(self, command):
         line = command + '\r\n'
         self.serial.write(line.encode('ascii'))
+        self.waitmsg('OK')
         time.sleep(0.1)
 
     def sendmsg(self, message):
