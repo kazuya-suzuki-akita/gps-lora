@@ -39,11 +39,13 @@ class ES920LR():
         GPIO.output(self.resetpin, 1)
 
     def waitmsg(self, msg):
-        line = str(self.readline(), encoding='ascii')
-        while msg in line:
-            line = str(self.readline(), encoding='ascii')
-
+        # バイト列で比較
+        line = self.readline()
+        while msg.encode('ascii') in line:
+            line = self.readline()
+    
     def setParameters(self):
+        self.waitmsg("Select Mode")
         self.sendcmd("2")
         self.sendcmd("x")
         self.sendcmd("a 2")
