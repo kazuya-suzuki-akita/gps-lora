@@ -102,7 +102,7 @@ class ES920LR():
         return line
 
     def readbinary(self):
-        length = int.from_bytes(self.serial.read(1))
+        length = int.from_bytes(self.serial.read(1, byteorder='big'))
         line = self.serial.read(length)
         return line
     
@@ -110,7 +110,7 @@ class ES920LR():
         now = datetime.now()
 
         length = len(binmsg)        
-        self.serial.write(length.to_bytes(1) + binmsg)
+        self.serial.write(length.to_bytes(1, byteorder='big') + binmsg)
 
         message = binmsg.hex()
         log = now.strftime('%Y%m%d%H%M%S,') + message + '\n'
