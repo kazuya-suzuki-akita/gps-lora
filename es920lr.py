@@ -101,6 +101,22 @@ class ES920LR():
             self.serial.open()
         return line
 
+    def readbinary(self):
+        length = int.from_bytes(self.serial.read(1))
+        line = self.serial.read(length)
+        return line
+    
+    def sendbinary(self, binmsg):
+        now = datetime.now()
+
+        length = len(binmsg)        
+        self.serial.write(length.to_bytes(1) + binmsg)
+
+        message = binmsg.hex()
+        log = now.strftime('%Y%m%d%H%M%S,') + message + '\n'
+        self.logfile.write(log)
+        self.logfile.flush()
+
     def parse(self, line):
         fmt = '4s4s4s' + str(len(line) - 14) + 'sxx'
         data = struct.unpack(fmt, line)
