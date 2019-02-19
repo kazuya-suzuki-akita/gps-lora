@@ -71,8 +71,8 @@ class ES920LR():
         if self.config['LoRa']['format'] == '2':
             self.binary = True 
         self.sendcmd("z")
-        if not self.binary:
-            self.readline(timeout=1)
+
+        self.readline(timeout=1)
 
     def sendcmd(self, command):
         line = command + '\r\n'
