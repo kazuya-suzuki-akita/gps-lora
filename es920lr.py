@@ -109,11 +109,11 @@ class ES920LR():
     def sendbinary(self, binmsg):
         now = datetime.now()
 
-        length = len(binmsg)        
-        self.serial.write(str(length) + binmsg)
+        message = str(len(binmsg)) + binmsg
+        line = message.to_bytes(len(message), byteorder='big')
+        self.serial.write(line)
 
-        message = binmsg.hex()
-        log = now.strftime('%Y%m%d%H%M%S,') + message + '\n'
+        log = now.strftime('%Y%m%d%H%M%S,') + binmsg + '\n'
         self.logfile.write(log)
         self.logfile.flush()
 
