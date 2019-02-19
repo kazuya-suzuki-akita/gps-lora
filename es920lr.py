@@ -29,6 +29,10 @@ class ES920LR():
         logfile = now.strftime('log-%Y%m%d%H%M%S.log')
         self.logfile = open(logfile, 'w')
 
+        self.rssi = False
+        self.rcvid = False
+        self.binary = False
+
         self.reset()
         time.sleep(2.5)
         self.setParameters()
@@ -57,10 +61,18 @@ class ES920LR():
         self.sendcmd("g %s" % self.config['LoRa']['dstid'])
         self.sendcmd("l %s" % self.config['LoRa']['ack'])
         self.sendcmd("o %s" % self.config['LoRa']['rcvid'])
+        if self.config['LoRa']['rcvid'] == '1':
+            self.rcvid = True
         self.sendcmd("p %s" % self.config['LoRa']['rssi'])
+        if self.config['LoRa']['rssi'] == '1':
+            self.rssi = True
         self.sendcmd("u %s" % self.config['LoRa']['power'])
+        self.sendcmd("A %s" % self.config['LoRa']['format'])
+        if self.config['LoRa']['format'] == '2':
+            self.binary = True 
         self.sendcmd("z")
-        self.readline(timeout=1)
+        if not self.binary:
+            self.readline(timeout=1)
 
     def sendcmd(self, command):
         line = command + '\r\n'
