@@ -110,7 +110,7 @@ class ES920LR():
         now = datetime.now()
 
         length = len(binmsg)        
-        self.serial.write(length.to_bytes(1, byteorder='big') + binmsg)
+        self.serial.write(str(length) + binmsg)
 
         message = binmsg.hex()
         log = now.strftime('%Y%m%d%H%M%S,') + message + '\n'
@@ -118,7 +118,10 @@ class ES920LR():
         self.logfile.flush()
 
     def parse(self, line):
-        fmt = '4s4s4s' + str(len(line) - 14) + 'sxx'
+        if self.binary:
+            fmt = '4s4s4s' + str(len(line) - 14)
+        else:
+            fmt = '4s4s4s' + str(len(line) - 14) + 'sxx'
         data = struct.unpack(fmt, line)
         hex2i = lambda x: int(x, 16) if int(x, 16) <= 0x7fff else ~ (0xffff - int(x, 16)) + 1
         rssi = hex2i(data[0])
