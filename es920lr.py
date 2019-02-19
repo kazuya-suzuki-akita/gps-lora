@@ -110,8 +110,7 @@ class ES920LR():
         now = datetime.now()
 
         message = str(len(binmsg)) + binmsg
-        line = message.to_bytes(len(message), byteorder='big')
-        self.serial.write(line)
+        self.serial.write(message.encode())
 
         log = now.strftime('%Y%m%d%H%M%S,') + binmsg + '\n'
         self.logfile.write(log)
