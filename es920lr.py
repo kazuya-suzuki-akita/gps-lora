@@ -60,6 +60,7 @@ class ES920LR():
         self.sendcmd("p %s" % self.config['LoRa']['rssi'])
         self.sendcmd("u %s" % self.config['LoRa']['power'])
         self.sendcmd("z")
+        self.readline(timeout=1)
 
     def sendcmd(self, command):
         line = command + '\r\n'
