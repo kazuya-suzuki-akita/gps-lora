@@ -57,9 +57,9 @@ def main():
 
     while True:
         if binary_mode:
-            line = lora_in.readline()
-        else:
             line = lora_in.readbinary()
+        else:
+            line = lora_in.readline()
         if not line[0:7].isalnum():
             f.write('Received unknown message')
         else:
