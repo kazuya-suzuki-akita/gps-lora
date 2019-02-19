@@ -20,7 +20,7 @@ def send_loop(lora, sendqueue):
         for i in range(maxretry):
             if binary_mode:
                 lora.sendbinary(msg)
-                line = lora.readbinary(msg)
+                line = lora.readbinary()
             else:
                 lora.sendmsg(msg)
                 line = lora.readline()
