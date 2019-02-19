@@ -102,7 +102,7 @@ class ES920LR():
         return line
 
     def readbinary(self):
-        length = int.from_bytes(self.serial.read(1, byteorder='big'))
+        length = int.from_bytes(self.serial.read(1), byteorder='big')
         line = self.serial.read(length)
         return line
     
