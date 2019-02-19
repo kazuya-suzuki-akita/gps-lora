@@ -12,13 +12,18 @@ from queue import Queue
 maxretry = 3
 CONFIGFILE_OUT = "repeater-out.ini"
 CONFIGFILE_IN = "repeater-in.ini"
+binary_mode = True
 
 def send_loop(lora, sendqueue):
     while True:
         msg = sendqueue.get()
         for i in range(maxretry):
-            lora.sendmsg(msg)
-            line = lora.readline()
+            if binary_mode:
+                lora.sendbinary(msg)
+                line = lora.readbinary(msg)
+            else:
+                lora.sendmsg(msg)
+                line = lora.readline()
             if b'OK' in line:
                 break
             sleep(2)
@@ -51,7 +56,10 @@ def main():
     f = open(logfile, 'w')
 
     while True:
-        line = lora_in.readline()
+        if binary_mode:
+            line = lora_in.readline()
+        else:
+            line = lora_in.readbinary()
         if not line[0:7].isalnum():
             f.write('Received unknown message')
         else:
