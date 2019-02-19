@@ -119,7 +119,7 @@ class ES920LR():
 
     def parse(self, line):
         if self.binary:
-            fmt = '4s4s4s' + str(len(line) - 14)
+            fmt = '4s4s4s' + str(len(line) - 12) + 's'
         else:
             fmt = '4s4s4s' + str(len(line) - 14) + 'sxx'
         data = struct.unpack(fmt, line)
