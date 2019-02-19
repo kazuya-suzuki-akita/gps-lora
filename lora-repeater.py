@@ -55,6 +55,8 @@ def main():
     logfile = now.strftime(logprefix + '-%Y%m%d%H%M%S.log')
     f = open(logfile, 'w')
 
+    print("Ready")
+
     while True:
         if binary_mode:
             line = lora_in.readbinary()
