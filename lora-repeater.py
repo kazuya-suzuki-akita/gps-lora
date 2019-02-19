@@ -60,16 +60,21 @@ def main():
     while True:
         if binary_mode:
             line = lora_in.readbinary()
-        else:
-            line = lora_in.readline()
-        if not line[0:7].isalnum():
-            f.write('Received unknown message')
-        else:
             rssi, panid, srcid, msg = lora_in.parse(line)
             now = datetime.now()
             now_str = now.strftime('%Y%m%d%H%M%S')
             f.write('{},{},{}\n'.format(now_str, msg, rssi))
             sendqueue.put(msg)
+        else:
+            line = lora_in.readline()
+            if not line[0:7].isalnum():
+                f.write('Received unknown message')
+            else:
+                rssi, panid, srcid, msg = lora_in.parse(line)
+                now = datetime.now()
+                now_str = now.strftime('%Y%m%d%H%M%S')
+                f.write('{},{},{}\n'.format(now_str, msg, rssi))
+                sendqueue.put(msg)
         f.flush()
 
 if __name__ == "__main__":
